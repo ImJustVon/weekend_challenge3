@@ -1,26 +1,38 @@
-var operation = {
-  first: '',
-  second: '',
-  operator: '',
-};
+// var operation = {
+//   first: '',
+//   second: '',
+//   operator: '',
+// };
+
+var fullList = [];
+var num = '';
+var operator = '';
 
 //sets the first number
-function setWriteNumber(str) {
-  if (operation.operator === '') {
-    operation.first += str;
-    $('#first').append(str);
-  } else {
-    operation.second += str;
-    $('#second').append(str);
-  }
-};
+// function setWriteNumber(str) {
+//   if (operation.operator === '') {
+//     operation.first += str;
+//     $('#first').append(str);
+//   } else {
+//     operation.second += str;
+//     $('#second').append(str);
+//   }
+// };
+
+function writeString(str) {
+  $('.operation').append(str);
+  num += str;
+  operator = '';
+}
 
 function setWriteOperator(str) {
+  // if (operation.operator != '') {
+  //   return;
+  // }
 
-  //if (operation.operator = '') {
   switch (str) {
     case 'add':
-      str = '+';
+      str = '%2B';
     break;
     case 'subtract':
       str = '-';
@@ -31,21 +43,31 @@ function setWriteOperator(str) {
     case 'divide':
       str = '/';
     break;
+    case 'power':
+      str = '^';
+    break;
+    case 'parLeft':
+      str = '(';
+    break;
+    case 'parRight':
+      str = ')';
+    break;
   }
-  $('#operator').append(str);
-  operation.operator = str;
-  console.log(operation.operator);
-
-  //} else {
-  //return operation.operator;
-  //}
+  fullList.push(num);
+  fullList.push(str);
+  num = '';
+  if (str === '%2B') {
+    $('.operation').append('+');
+  } else {
+    $('.operation').append(str);
+  }
 };
 
-function postOperation() {
+function postOperation(str) {
   $.ajax({
     type: 'POST',
     url: '/calculator',
-    data: operation,
+    data: 'str=' + str,
     success: getAnswer, });
 };
 
@@ -61,21 +83,22 @@ function getAnswer() {
   });
 };
 
-function reset() {
-  $('#first').empty();
-  $('#operator').empty();
-  $('#second').empty();
-  $('#answer').empty();
-  operation.first = '';
-  operation.second = '';
-  operation.operator = '';
-}
+// function reset() {
+//   $('#first').empty();
+//   $('#operator').empty();
+//   $('#second').empty();
+//   $('#answer').empty();
+//   operation.first = '';
+//   operation.second = '';
+//   operation.operator = '';
+// }
 
 $(function () {
   $('.rows').on('click', 'button', function () {
     var num = $(this).attr('id');
     console.log(num);
-    setWriteNumber(num);
+    writeString(num);
+    console.log(fullList);
   });
 
   $('.operators').on('click', 'button', function () {
@@ -84,6 +107,13 @@ $(function () {
     setWriteOperator(operator);
   });
 
-  $('#equals').on('click', postOperation);
+  $('#equals').on('click', function () {
+    fullList.push(num);
+    console.log(fullList);
+    var str = fullList.join('');
+    console.log(str);
+    postOperation(str);
+  });
+
   $('#reset').on('click', reset);
 });
