@@ -7,6 +7,7 @@ router.post('/calculator', function (req, res) {
   var reversePolish = ms.infixToPostfix(req.body.str);
   answer = ms.solvePostfix(reversePolish);
   console.log(answer);
+  res.sendStatus(200);
 
   //   var operator = req.body.operator;
   //   switch (operator) {
@@ -117,7 +118,7 @@ function MathSolver() {
   this.solvePostfix = function (postfix) {
       var resultStack = [];
       postfix = postfix.split(' ');
-      for (var i = 0; i < postfix.length; i++) {
+      for (var i = 0; i < postfix.length - 1; i++) {
         console.log(resultStack);
         if (postfix[i].isNumeric()) {
           resultStack.push(postfix[i]);
@@ -138,11 +139,10 @@ function MathSolver() {
         }
       }
 
-      if (resultStack.length < 2) {
-        console.log(resultStack);
-        return resultStack.pop();
-      } else {
+      if (resultStack.length > 1) {
         return 'error';
+      } else {
+        return resultStack.pop();
       }
     };
 

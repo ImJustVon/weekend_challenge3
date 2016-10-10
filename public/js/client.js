@@ -20,15 +20,21 @@ var operator = '';
 // };
 
 function writeString(str) {
+  if (fullList[fullList.length - 1] === ')') {
+    return;
+  }
+
   $('.operation').append(str);
   num += str;
   operator = '';
+
 }
 
 function setWriteOperator(str) {
-  // if (operation.operator != '') {
-  //   return;
-  // }
+  fullList.push(num);
+  if (operator != '') {
+    return;
+  }
 
   switch (str) {
     case 'add':
@@ -47,15 +53,22 @@ function setWriteOperator(str) {
       str = '^';
     break;
     case 'parLeft':
+      if (fullList[fullList.length - 1].isNumeric()) {
+        fullList.push('*');
+      }
+
       str = '(';
     break;
     case 'parRight':
       str = ')';
     break;
   }
-  fullList.push(num);
   fullList.push(str);
   num = '';
+  if (str != ')') {
+    operator = str;
+  }
+
   if (str === '%2B') {
     $('.operation').append('+');
   } else {
@@ -83,15 +96,17 @@ function getAnswer() {
   });
 };
 
-// function reset() {
-//   $('#first').empty();
-//   $('#operator').empty();
-//   $('#second').empty();
-//   $('#answer').empty();
-//   operation.first = '';
-//   operation.second = '';
-//   operation.operator = '';
-// }
+String.prototype.isNumeric = function () {
+    return !isNaN(parseFloat(this)) && isFinite(this);
+  };
+
+function reset() {
+  $('.operation').empty();
+  $('#answer').empty();
+  num = '';
+  operator = '';
+  fullList = [];
+}
 
 $(function () {
   $('.rows').on('click', 'button', function () {

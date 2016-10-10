@@ -1,6 +1,8 @@
 #calculator {
+    margin-left: auto;
+    margin-right: auto;
     width: 50%;
-    margin: auto;
+    padding: 30px;
 }
 
 h1 {
@@ -15,8 +17,25 @@ h2 {
     height: 25px;
 }
 
-#fields {
+.buttons {
+    padding: 0 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.field {
     height: 200px;
+}
+
+
+/*.row {
+    width: 50%;
+    margin-left: auto;
+    display: inline-block;
+}*/
+
+#nums {
+    padding: 0 50px;
 }
 
 .number {
@@ -30,12 +49,21 @@ h2 {
     text-align: center;
 }
 
+.operators {
+    padding: 0 50px;
+}
+
 .row {
     width: 50%;
     text-align: center;
 }
 
+#equals {
+    float: right;
+}
+
 button {
+    display: inline-block;
     background: #343cd9;
     background-image: -webkit-linear-gradient(top, #343cd9, #3052b8);
     background-image: -moz-linear-gradient(top, #343cd9, #3052b8);
@@ -53,6 +81,7 @@ button {
 }
 
 button:hover {
+    display: inline-block;
     background: #3cb0fd;
     background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
     background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
